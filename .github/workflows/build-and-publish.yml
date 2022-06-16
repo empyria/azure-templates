@@ -1,0 +1,30 @@
+name: Build and Publish
+
+on:
+  push:
+    branches:
+    - main
+env:  
+  PUBLISH_PATH: publish  
+  DOTNET_CORE_VERSION: 6.0.x  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Version
+      run: echo "PACKAGE_VERSION=1.0.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+    - name: Install Octopus CLI
+      uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
+      with:
+        version: latest
+    - name: Package API
+      run: |
+        octo pack --id="AzureTemplates" --format="Zip" --version="$PACKAGE_VERSION" --basePath="/Templates" --outFolder="${{ env.PUBLISH_PATH }}"
+    - name: Push Packages
+      uses: OctopusDeploy/push-package-action@v1.1.1
+      with:
+        api_key: ${{ secrets.OCTOPUS_API_KEY }}
+        server: ${{ secrets.OCTOPUS_URL }}
+        packages: "${{ env.PUBLISH_PATH }}/AzureTemplates.${{ env.PACKAGE_VERSION }}.zip"
+        space: ${{ secrets.OCTOPUS_SPACE }}  

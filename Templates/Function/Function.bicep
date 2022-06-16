@@ -105,6 +105,9 @@ var baseAppSettings = union([
     }
   ], additionalAppSettings)
 
+var managedIdentityName_var = managedIdentityName == '' ? appName_var :  managedIdentityName
+
+
 var identity = managedIdentityName != '' ? {
   type: 'UserAssigned'
   userAssignedIdentities: {
@@ -175,13 +178,13 @@ resource FunctionApp 'Microsoft.Web/sites@2021-02-01' = {
     siteConfig: {
       appSettings: createAppInsights ? union(baseAppSettings, appInsightsAppSettings) : baseAppSettings
 
-    }
+    } 
     keyVaultReferenceIdentity: managedIdentityName != '' ? ManagedIdentity.id : 'SystemAssigned'
   }
 }
 
 resource ManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = if (managedIdentityName != '') {
-  name: managedIdentityName
+  name: managedIdentityName_var
   location: location
 }
 

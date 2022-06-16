@@ -1,9 +1,9 @@
-name: Build and Publish
+name: Build and Publish to Octopus Deploy
 
 on:
   push:
     branches:
-    - main
+    - action
 env:  
   PUBLISH_PATH: publish  
   DOTNET_CORE_VERSION: 6.0.x  

@@ -20,7 +20,7 @@ jobs:
         version: latest
     - name: Package API
       run: |
-        octo pack --id="AzureTemplates" --format="Zip" --version="$PACKAGE_VERSION" --basePath="/Templates" --outFolder="${{ env.PUBLISH_PATH }}"
+        octo pack --id="AzureTemplates" --format="Zip" --version="$PACKAGE_VERSION" --basePath="Templates" --outFolder="${{ env.PUBLISH_PATH }}"
     - name: Push Packages
       uses: OctopusDeploy/push-package-action@v1.1.1
       with:

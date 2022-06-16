@@ -99,10 +99,6 @@ var baseAppSettings = union([
       name: 'AzureWebJobsDisableHomepage'
       value: 'true'
     }
-    {
-      name: 'AppConfiguration:Endpoint'
-      value: 'lor-apps${environmentSuffix}.azconfig.io'
-    }
   ], additionalAppSettings)
 
 var managedIdentityName_var = managedIdentityName == '' ? appName_var :  managedIdentityName
